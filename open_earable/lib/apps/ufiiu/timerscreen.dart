@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'interact.dart';
+
 class TimerScreen extends StatelessWidget {
+  final Interact _interact;
+  final TextEditingController _controller = TextEditingController();
+
+  TimerScreen(this._interact);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +30,10 @@ class TimerScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(20),
               child: TextField(
+                controller: _controller,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Zeitlänge eingeben (in Sekunden)',
+                  labelText: 'Zeitlänge eingeben (in Minuten)',
                 ),
               ),
             ),
@@ -34,9 +42,13 @@ class TimerScreen extends StatelessWidget {
             // Absende-Button
             ElevatedButton(
               onPressed: () {
-                // Hier kannst du die Aktion hinzufügen, die bei Drücken des Buttons ausgeführt werden soll
-                // Zum Beispiel: Starte den Timer oder führe andere Aktionen aus.
-                print('Timer starten!');
+                String input = _controller.text;
+
+                // Die eingegebene Zeit in Minuten umwandeln (angenommen, dass es sich um eine gültige Zahl handelt)
+                int minutes = int.tryParse(input) ?? 0;
+
+                // Die Interact.startTimer-Funktion aufrufen
+                _interact.startTimer(minutes);
               },
               child: Text('Starten'),
             ),

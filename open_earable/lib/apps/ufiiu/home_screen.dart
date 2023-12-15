@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:open_earable/apps/ufiiu/timerscreen.dart';
 import 'package:open_earable_flutter/src/open_earable_flutter.dart';
 
+import 'interact.dart';
+
 class SleepHomeScreen extends StatefulWidget {
   final OpenEarable _openEarable;
   SleepHomeScreen(this._openEarable);
@@ -76,7 +78,7 @@ class _HomeScreenState extends State<SleepHomeScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => TimerScreen(),
+            builder: (context) => TimerScreen(Interact(_openEarable)),
           ),
         );
       }
