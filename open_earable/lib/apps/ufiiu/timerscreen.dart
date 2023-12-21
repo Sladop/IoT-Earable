@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:open_earable/apps/ufiiu/movementTracker.dart';
+import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
 
 import 'interact.dart';
 
-class TimerScreen extends StatelessWidget {
+class TimerScreen extends StatefulWidget {
+  final Interact interact;
+  TimerScreen(this.interact);
+  @override
+  State<StatefulWidget> createState() => TimerScreenState(interact);
+
+}
+
+
+class TimerScreenState extends State<TimerScreen> {
   final Interact _interact;
+  late final MovementTracker _movementTracker;
+  //Input Controller
   final TextEditingController _controller = TextEditingController();
 
-  TimerScreen(this._interact);
+  //Display Data
+  SensorDataType? _sensorData = NullData();
 
+
+  //Constructor
+  TimerScreenState(this._interact) {
+    this._movementTracker = MovementTracker(_interact);
+  }
+
+  //Set new display text
+  void updateText(SensorDataType sensorData) {
+    setState(() {
+      _sensorData = sensorData;
+    });
+  }
+
+
+
+  //Widget Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +76,37 @@ class TimerScreen extends StatelessWidget {
 
                 // Die eingegebene Zeit in Minuten umwandeln (angenommen, dass es sich um eine gültige Zahl handelt)
                 int minutes = int.tryParse(input) ?? 0;
+                _movementTracker.start(minutes, updateText);
 
-                // Die Interact.startTimer-Funktion aufrufen
-                _interact.startTimer(minutes);
+
               },
               child: Text('Starten'),
+            ),
+            DataTable(
+              columns: [
+                DataColumn(label: Text('Sensor')),
+                DataColumn(label: Text('Wert')),
+              ],
+              rows: [
+                DataRow(
+                  cells: [
+                    DataCell(Text('X')),
+                    DataCell(Text(_sensorData!.x.toStringAsFixed(14))),
+                  ],
+                ),
+                DataRow(
+                  cells: [
+                    DataCell(Text('Y')),
+                    DataCell(Text(_sensorData!.y.toStringAsFixed(14))),
+                  ],
+                ),
+                DataRow(
+                  cells: [
+                    DataCell(Text('Z')),
+                    DataCell(Text(_sensorData!.z.toStringAsFixed(14))),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
