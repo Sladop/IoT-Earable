@@ -19,8 +19,8 @@ class TimerScreenState extends State<TimerScreen> {
   //Input Controller
   final TextEditingController _controller = TextEditingController();
 
-  //Display Text
-  String _displayText = "Initial State";
+  //Display Data
+  SensorDataType? _sensorData = NullData();
 
 
   //Constructor
@@ -31,10 +31,7 @@ class TimerScreenState extends State<TimerScreen> {
   //Set new display text
   void updateText(SensorDataType sensorData) {
     setState(() {
-      _displayText =
-             "X: " + sensorData.x.toString()
-          + " Y: " + sensorData.y.toString()
-          + " Z: " + sensorData.z.toString();
+      _sensorData = sensorData;
     });
   }
 
@@ -85,11 +82,32 @@ class TimerScreenState extends State<TimerScreen> {
               },
               child: Text('Starten'),
             ),
-            Text(
-              _displayText,
-              style: TextStyle(fontSize: 18),
+            DataTable(
+              columns: [
+                DataColumn(label: Text('Sensor')),
+                DataColumn(label: Text('Wert')),
+              ],
+              rows: [
+                DataRow(
+                  cells: [
+                    DataCell(Text('X')),
+                    DataCell(Text(_sensorData!.x.toStringAsFixed(14))),
+                  ],
+                ),
+                DataRow(
+                  cells: [
+                    DataCell(Text('Y')),
+                    DataCell(Text(_sensorData!.y.toStringAsFixed(14))),
+                  ],
+                ),
+                DataRow(
+                  cells: [
+                    DataCell(Text('Z')),
+                    DataCell(Text(_sensorData!.z.toStringAsFixed(14))),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 20),
           ],
         ),
       ),

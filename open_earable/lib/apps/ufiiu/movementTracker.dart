@@ -4,6 +4,7 @@ import 'package:open_earable/apps/ufiiu/interact.dart';
 import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
 import 'package:open_earable/apps/ufiiu/timerscreen.dart';
 import 'package:open_earable_flutter/src/open_earable_flutter.dart';
+import 'package:three_dart_jsm/three_dart_jsm.dart';
 
 class MovementTracker {
   final Interact _interact;
@@ -42,11 +43,9 @@ class MovementTracker {
     _subscription = _openEarable.sensorManager.subscribeToSensorData(0).listen((event) {
 
       //Update method
-      print(event["ACC"]);
-      updateText(Acceleration(event));
-      print("Test");
+      updateText(Gyroscope(event));
 
-      _update(Acceleration(event));
+      _update(Gyroscope(event));
     });
   }
 
@@ -68,11 +67,8 @@ class MovementTracker {
   }
 
 
-  void _update(Acceleration acc) {
-    print("Hier: ");
-    print(acc.x);
-    print(acc.y);
-    print(acc.z);
+  void _update(SensorDataType dt) {
+    print("Update...");
   }
 
   //Sensor Config

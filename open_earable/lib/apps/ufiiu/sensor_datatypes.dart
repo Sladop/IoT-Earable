@@ -21,3 +21,6 @@ class Gyroscope extends SensorDataType {
 class EulerAngles extends SensorDataType {
   EulerAngles(Map<dynamic, dynamic> data) : super(data["EULER"]);
 }
+class NullData extends SensorDataType {
+  NullData() : super({"X": 0.0, "Y": 0.0, "Z": 0.0});
+}
