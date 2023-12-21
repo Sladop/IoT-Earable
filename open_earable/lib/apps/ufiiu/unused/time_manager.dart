@@ -47,7 +47,7 @@ class TimeManager {
   Updates the Timer and the Text if threshhold reached.
    */
   void updateTimer({required roll, required pitch, required yaw}) {
-    TimerScreenState.updateText(roll);
+    //TimerScreenState.updateText(roll);
     print("Test Roll: " + roll.toString());
     if(roll > 10) {
       resetTimer(_minutes);

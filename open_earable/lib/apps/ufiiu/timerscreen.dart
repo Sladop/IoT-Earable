@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_earable/apps/ufiiu/movementTracker.dart';
+import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
 
 import 'interact.dart';
 
@@ -28,9 +29,12 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   //Set new display text
-  void updateText(String text) {
+  void updateText(SensorDataType sensorData) {
     setState(() {
-      _displayText = text;
+      _displayText =
+             "X: " + sensorData.x.toString()
+          + " Y: " + sensorData.y.toString()
+          + " Z: " + sensorData.z.toString();
     });
   }
 

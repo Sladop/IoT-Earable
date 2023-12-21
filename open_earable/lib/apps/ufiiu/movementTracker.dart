@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:open_earable/apps/ufiiu/interact.dart';
+import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
 import 'package:open_earable/apps/ufiiu/timerscreen.dart';
 import 'package:open_earable_flutter/src/open_earable_flutter.dart';
 
@@ -20,7 +21,7 @@ class MovementTracker {
   }
 
   //Start Subscription and reset timer.
-  void start(int minutes, void Function(String text) updateText) {
+  void start(int minutes, void Function(SensorDataType s) updateText) {
 
     print("Testing start");
 
@@ -41,13 +42,11 @@ class MovementTracker {
     _subscription = _openEarable.sensorManager.subscribeToSensorData(0).listen((event) {
 
       //Update method
-      updateText(event["EULER"]["ROLL"].toString());
+      print(event["ACC"]);
+      updateText(Acceleration(event));
+      print("Test");
 
-      _update(
-        X: event["ACC"]["X"],
-        Y: event["ACC"]["Y"],
-        Z: event["ACC"]["Z"]
-      );
+      _update(Acceleration(event));
     });
   }
 
@@ -69,11 +68,11 @@ class MovementTracker {
   }
 
 
-  void _update({required X, required Y, required Z}) {
+  void _update(Acceleration acc) {
     print("Hier: ");
-    print(X.toString());
-    print(Y.toString());
-    print(Z.toString());
+    print(acc.x);
+    print(acc.y);
+    print(acc.z);
   }
 
   //Sensor Config
