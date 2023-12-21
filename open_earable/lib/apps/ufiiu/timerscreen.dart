@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:open_earable/apps/ufiiu/movementTracker.dart';
 
 import 'interact.dart';
 
 class TimerScreen extends StatelessWidget {
   final Interact _interact;
+  late final _movementTracker;
   final TextEditingController _controller = TextEditingController();
 
-  TimerScreen(this._interact);
+  TimerScreen(this._interact) {
+    this._movementTracker = MovementTracker(_interact);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +51,7 @@ class TimerScreen extends StatelessWidget {
                 // Die eingegebene Zeit in Minuten umwandeln (angenommen, dass es sich um eine gültige Zahl handelt)
                 int minutes = int.tryParse(input) ?? 0;
 
-                // Die Interact.startTimer-Funktion aufrufen
-                _interact.startTimer(minutes);
+                _movementTracker.start(minutes);
               },
               child: Text('Starten'),
             ),
