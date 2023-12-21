@@ -16,6 +16,8 @@ class _HomeScreenState extends State<SleepHomeScreen> {
   _HomeScreenState(this._openEarable);
   int _currentIndex = 0;
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +50,17 @@ class _HomeScreenState extends State<SleepHomeScreen> {
     switch (_currentIndex) {
       case 0:
         return Center(
-          child: Image.network(
-            'https://cdn-icons-png.flaticon.com/512/198/198155.png',
-            width: 150,
-            height: 150,
-          ),
-
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                'https://cdn-icons-png.flaticon.com/512/198/198155.png',
+                width: 150,
+                height: 150,
+              ),
+              SizedBox(height: 20),
+            ],
+          )
         );
       case 1:
         return Center(

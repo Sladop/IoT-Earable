@@ -1,18 +1,23 @@
 import 'dart:async';
 
-import 'interact.dart';
+import 'package:open_earable/apps/ufiiu/timerscreen.dart';
+
+import '../interact.dart';
 
 class TimeManager {
 
-  Interact interact;
+  final Interact interact;
+
+  //Timer variables
+  Timer? movementTimer;
   int _minutes = 0;
 
-  TimeManager(this.interact) {
+  //Constructor
+  TimeManager(this.interact);
 
-  }
-
-  Timer? movementTimer;
-
+  /*
+  Rings after the given time.
+   */
   void _startTimerRing(int minutes) {
     _minutes = minutes;
     // Hier wird der Timer gestartet.
@@ -22,17 +27,28 @@ class TimeManager {
     });
   }
 
+  /*
+  Resets the timer.
+   */
   void resetTimer(int minutes) {
     // Hier wird der Timer zurückgesetzt.
     movementTimer?.cancel();
     _startTimerRing(minutes);
   }
 
+  /*
+  Stops the Timer.
+   */
   void stopTimer() {
     movementTimer?.cancel();
   }
 
+  /*
+  Updates the Timer and the Text if threshhold reached.
+   */
   void updateTimer({required roll, required pitch, required yaw}) {
+    TimerScreenState.updateText(roll);
+    print("Test Roll: " + roll.toString());
     if(roll > 10) {
       resetTimer(_minutes);
     }

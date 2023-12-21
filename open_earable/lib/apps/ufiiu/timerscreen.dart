@@ -3,15 +3,40 @@ import 'package:open_earable/apps/ufiiu/movementTracker.dart';
 
 import 'interact.dart';
 
-class TimerScreen extends StatelessWidget {
+class TimerScreen extends StatefulWidget {
+  final Interact interact;
+  TimerScreen(this.interact);
+  @override
+  State<StatefulWidget> createState() => TimerScreenState(interact);
+
+}
+
+
+class TimerScreenState extends State<TimerScreen> {
   final Interact _interact;
-  late final _movementTracker;
+  late final MovementTracker _movementTracker;
+  //Input Controller
   final TextEditingController _controller = TextEditingController();
 
-  TimerScreen(this._interact) {
+  //Display Text
+  String _displayText = "Initial State";
+
+
+  //Constructor
+  TimerScreenState(this._interact) {
     this._movementTracker = MovementTracker(_interact);
   }
 
+  //Set new display text
+  void updateText(String text) {
+    setState(() {
+      _displayText = text;
+    });
+  }
+
+
+
+  //Widget Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +75,17 @@ class TimerScreen extends StatelessWidget {
 
                 // Die eingegebene Zeit in Minuten umwandeln (angenommen, dass es sich um eine gültige Zahl handelt)
                 int minutes = int.tryParse(input) ?? 0;
+                _movementTracker.start(minutes, updateText);
 
-                _movementTracker.start(minutes);
+
               },
               child: Text('Starten'),
             ),
+            Text(
+              _displayText,
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 20),
           ],
         ),
       ),

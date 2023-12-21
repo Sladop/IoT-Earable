@@ -3,22 +3,17 @@ import 'dart:async';
 import 'package:open_earable_flutter/src/open_earable_flutter.dart';
 
 class Interact {
+
   final OpenEarable _openEarable;
 
-  //Only for testing!
-  int maxAccX = 0;
-  int maxAccY = 0;
-  int maxAccZ = 0;
+  //Constructor
+  Interact(this._openEarable);
 
 
-
-  Interact(this._openEarable) {
-  }
-
+  //Getter for the Earable
   OpenEarable getEarable() {
     return _openEarable;
   }
-
 
 
   /*
