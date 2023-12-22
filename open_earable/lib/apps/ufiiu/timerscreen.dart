@@ -21,6 +21,7 @@ class TimerScreenState extends State<TimerScreen> {
 
   //Display Data
   SensorDataType? _sensorData = NullData();
+  int _tick = 0;
 
 
   //Constructor
@@ -29,9 +30,10 @@ class TimerScreenState extends State<TimerScreen> {
   }
 
   //Set new display text
-  void updateText(SensorDataType sensorData) {
+  void updateText(SensorDataType sensorData, int tick) {
     setState(() {
       _sensorData = sensorData;
+      _tick = tick;
     });
   }
 
@@ -82,6 +84,8 @@ class TimerScreenState extends State<TimerScreen> {
               },
               child: Text('Starten'),
             ),
+            Text("Zeit: " + _tick.toString()),
+
             DataTable(
               columns: [
                 DataColumn(label: Text('Sensor')),

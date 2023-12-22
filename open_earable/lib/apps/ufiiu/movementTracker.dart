@@ -22,19 +22,24 @@ class MovementTracker {
   }
 
   //Start Subscription and reset timer.
-  void start(int minutes, void Function(SensorDataType s) updateText) {
+  void start(int minutes, void Function(SensorDataType s, int tick) updateText) {
 
     print("Testing start");
+
+    stop();
+
 
     //Timer wird neugestartet.
     _startTimer(minutes);
 
+    /*
     //Falls pausiert
     if (_subscription?.isPaused ?? false) {
       _subscription?.resume();
       print("if Case");
-      return;
     }
+    */
+
 
     //Sets sensor config
     _openEarable.sensorManager.writeSensorConfig(_buildSensorConfig());
@@ -43,16 +48,17 @@ class MovementTracker {
     _subscription = _openEarable.sensorManager.subscribeToSensorData(0).listen((event) {
 
       //Update method
-      updateText(Gyroscope(event));
+      updateText(Gyroscope(event), _timer!.tick);
 
-      _update(Gyroscope(event));
+      _update(Gyroscope(event), minutes);
     });
   }
 
   //Startet den Timer.
   void _startTimer(int minutes) {
+    _timer?.cancel();
     _timer = Timer(Duration(minutes: minutes), () {
-      // Timer abgelaufen, rufe _ring() auf.
+      // Timer abgelaufen, rufe _ring() + stop() auf.
       _interact.ring();
       stop();
     });
@@ -63,12 +69,34 @@ class MovementTracker {
 
     print("Stop");
     _timer?.cancel();
-    _subscription?.pause();
+    _subscription?.cancel();
+    print("Sub Stop");
   }
 
 
-  void _update(SensorDataType dt) {
-    print("Update...");
+  void _update(SensorDataType dt, int minutes) {
+    if(_validMovement(dt)) {
+      print("Movement Action:");
+      _timer?.cancel();
+      _startTimer(minutes);
+      print("Timerstart called...");
+    }
+  }
+
+  bool _validMovement(SensorDataType dt) {
+    Gyroscope gyro;
+    if(dt is Gyroscope) {
+      gyro = dt;
+      print("Loading Acc...");
+      if(gyro.x.abs() > 5
+      || gyro.y.abs() > 5
+      || gyro.z.abs() > 5
+      ) {
+        print("Movement detected....");
+        return true;
+      }
+    }
+    return false;
   }
 
   //Sensor Config
