@@ -7,14 +7,16 @@ import 'package:open_earable_flutter/src/open_earable_flutter.dart';
 import 'package:three_dart_jsm/three_dart_jsm.dart';
 
 class MovementTracker {
+
+  //Incetaction variables
   final Interact _interact;
   late final OpenEarable _openEarable;
 
   Timer? _timer;
 
-
   //Stream Subscription
   StreamSubscription<Map<String, dynamic>>? _subscription;
+
 
   //Constructor
   MovementTracker(this._interact) {
@@ -24,22 +26,9 @@ class MovementTracker {
   //Start Subscription and reset timer.
   void start(int minutes, void Function(SensorDataType s, int tick) updateText) {
 
-    print("Testing start");
-
+    //Timer (re-)start
     stop();
-
-
-    //Timer wird neugestartet.
     _startTimer(minutes);
-
-    /*
-    //Falls pausiert
-    if (_subscription?.isPaused ?? false) {
-      _subscription?.resume();
-      print("if Case");
-    }
-    */
-
 
     //Sets sensor config
     _openEarable.sensorManager.writeSensorConfig(_buildSensorConfig());
@@ -47,59 +36,58 @@ class MovementTracker {
     //Starts listening to the subscription
     _subscription = _openEarable.sensorManager.subscribeToSensorData(0).listen((event) {
 
-      //Update method
+      //Display update callback
       updateText(Gyroscope(event), _timer!.tick);
 
+      //Timer update
       _update(Gyroscope(event), minutes);
     });
   }
 
-  //Startet den Timer.
+  //(Re-)Starts timer and cancels subscription & calls ring() when finished.
   void _startTimer(int minutes) {
     _timer?.cancel();
     _timer = Timer(Duration(minutes: minutes), () {
-      // Timer abgelaufen, rufe _ring() + stop() auf.
+      //End of timer:
       _interact.ring();
       stop();
     });
   }
 
-  //Stoppt timer + Subscription
+  // Cancels timer and subscription to the Earable sensor stream.
   void stop() {
-
-    print("Stop");
     _timer?.cancel();
     _subscription?.cancel();
-    print("Sub Stop");
   }
 
-
+  // Update method for restarting timer when movement is tracked.
   void _update(SensorDataType dt, int minutes) {
     if(_validMovement(dt)) {
-      print("Movement Action:");
       _timer?.cancel();
       _startTimer(minutes);
-      print("Timerstart called...");
     }
   }
 
+  // Validates wether the given sensordata could be interpretet as a movement.
   bool _validMovement(SensorDataType dt) {
+
     Gyroscope gyro;
+
     if(dt is Gyroscope) {
       gyro = dt;
-      print("Loading Acc...");
+
+      //Threshhold validating for gyroscopedata.
       if(gyro.x.abs() > 5
       || gyro.y.abs() > 5
       || gyro.z.abs() > 5
       ) {
-        print("Movement detected....");
         return true;
       }
     }
     return false;
   }
 
-  //Sensor Config
+  //Sensor Config for the earable.
   OpenEarableSensorConfig _buildSensorConfig() {
     return OpenEarableSensorConfig(
       sensorId: 0,

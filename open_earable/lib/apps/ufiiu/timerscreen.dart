@@ -4,23 +4,35 @@ import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
 
 import 'interact.dart';
 
+/*
+TImerScreen - Main screen for the movment timer interaction.
+ */
 class TimerScreen extends StatefulWidget {
   final Interact interact;
   TimerScreen(this.interact);
   @override
   State<StatefulWidget> createState() => TimerScreenState(interact);
-
 }
 
 
+/*
+State for the movement Timer Interaction
+ */
 class TimerScreenState extends State<TimerScreen> {
+
+  //Interaction class
   final Interact _interact;
+
+  //Movement & timer logic
   late final MovementTracker _movementTracker;
+
   //Input Controller
   final TextEditingController _controller = TextEditingController();
 
   //Display Data
   SensorDataType? _sensorData = NullData();
+
+  //TODO
   int _tick = 0;
 
 
@@ -29,17 +41,19 @@ class TimerScreenState extends State<TimerScreen> {
     this._movementTracker = MovementTracker(_interact);
   }
 
-  //Set new display text
+  //Updates the text data.
   void updateText(SensorDataType sensorData, int tick) {
     setState(() {
       _sensorData = sensorData;
+
+      //TODO
       _tick = tick;
     });
   }
 
 
 
-  //Widget Build
+  //build the main Widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +64,7 @@ class TimerScreenState extends State<TimerScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Bild deiner Wahl
+            // Image Source
             Image.network(
               'https://cdn-icons-png.flaticon.com/512/198/198155.png',
               width: 150,
@@ -58,7 +72,7 @@ class TimerScreenState extends State<TimerScreen> {
             ),
             SizedBox(height: 20),
 
-            // Eingabefeld für Zeitlänge
+            // Input for Time length
             Padding(
               padding: EdgeInsets.all(20),
               child: TextField(
@@ -71,21 +85,20 @@ class TimerScreenState extends State<TimerScreen> {
             ),
             SizedBox(height: 20),
 
-            // Absende-Button
+            // Start timer button
             ElevatedButton(
               onPressed: () {
                 String input = _controller.text;
-
-                // Die eingegebene Zeit in Minuten umwandeln (angenommen, dass es sich um eine gültige Zahl handelt)
                 int minutes = int.tryParse(input) ?? 0;
+
                 _movementTracker.start(minutes, updateText);
-
-
               },
               child: Text('Starten'),
             ),
-            Text("Zeit: " + _tick.toString()),
 
+            Text(_tick.toString()),
+
+            //Data table for the live display of the sensor data.
             DataTable(
               columns: [
                 DataColumn(label: Text('Sensor')),
@@ -117,5 +130,4 @@ class TimerScreenState extends State<TimerScreen> {
       ),
     );
   }
-  
 }

@@ -1,7 +1,9 @@
-import 'dart:async';
-
 import 'package:open_earable_flutter/src/open_earable_flutter.dart';
 
+/*
+Interaction class for the earable. All actions executed on the earable are accessible through this class.
+For example rings or led colors.
+ */
 class Interact {
 
   final OpenEarable _openEarable;
@@ -16,14 +18,12 @@ class Interact {
   }
 
 
-  /*
-  Lets the OpenEarable play the jingel one.
-   */
+  //Lets the OpenEarable play the jingel-ID: '1'.
   void ring() {
     try {
       _openEarable.audioPlayer.jingle(1);
     } catch (e) {
-      print('Jingle konnte nicht gespielt werden!');
+      print('ERROR: Jingle konnte nicht gespielt werden!');
     }
   }
 }
