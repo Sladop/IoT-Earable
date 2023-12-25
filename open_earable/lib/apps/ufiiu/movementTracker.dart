@@ -26,7 +26,7 @@ class MovementTracker {
   ///
   /// Input: [minutes] for the time before the ring.
   /// Input: [updateText] as an void callback function for the textupdate.
-  void start(int minutes, void Function(SensorDataType s, int tick) updateText) {
+  void start(int minutes, void Function(SensorDataType s) updateText) {
 
     //Timer (re-)start
     stop();
@@ -39,7 +39,7 @@ class MovementTracker {
     _subscription = _openEarable.sensorManager.subscribeToSensorData(0).listen((event) {
 
       //Display update callback
-      updateText(Gyroscope(event), _timer!.tick);
+      updateText(Gyroscope(event));
 
       //Timer update
       _update(Gyroscope(event), minutes);

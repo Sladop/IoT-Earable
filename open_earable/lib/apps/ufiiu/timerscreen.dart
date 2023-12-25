@@ -28,22 +28,15 @@ class TimerScreenState extends State<TimerScreen> {
   //Display Data
   SensorDataType? _sensorData = NullData();
 
-  //TODO
-  int _tick = 0;
-
-
   //Constructor
   TimerScreenState(this._interact) {
     this._movementTracker = MovementTracker(_interact);
   }
 
   //Updates the text data.
-  void updateText(SensorDataType sensorData, int tick) {
+  void updateText(SensorDataType sensorData) {
     setState(() {
       _sensorData = sensorData;
-
-      //TODO
-      _tick = tick;
     });
   }
 
@@ -91,8 +84,6 @@ class TimerScreenState extends State<TimerScreen> {
               },
               child: Text('Starten'),
             ),
-
-            Text(_tick.toString()),
 
             //Data table for the live display of the sensor data.
             DataTable(
