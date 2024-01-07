@@ -72,10 +72,11 @@ class _HomeScreenState extends State<SleepHomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //Image-Source
-              Image.network(
-                'https://cdn-icons-png.flaticon.com/512/198/198155.png',
-                width: 150,
-                height: 150,
+              Text(
+                'Mit der Powernapping App können Sie einen Timer starten, der ganz automatisch an Ihren Bewegungen erkennt, '
+                    'wann Sie wirklich eingeschlafen sind. Der Timer wird automatisch restartet, wenn Sie sich bewegen, '
+                    'so können Sie effektiv powernappen und eine gemütliche Position finden ohne das schon die Zeit abläuft!',
+                style: TextStyle(fontSize: 24),
               ),
               SizedBox(height: 20),
             ],
