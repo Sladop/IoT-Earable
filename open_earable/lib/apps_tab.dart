@@ -39,8 +39,8 @@ class AppsTab extends StatelessWidget {
           }),
       AppInfo(
           iconData: Icons.face_5,
-          title: "Anti-Sleep",
-          description: "Wakes you up after to long sleep!",
+          title: "Powernapper",
+          description: "Powernapping timer!",
           onTap: () {
             Navigator.push(
                 context,

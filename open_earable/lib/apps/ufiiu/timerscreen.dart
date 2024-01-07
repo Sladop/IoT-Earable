@@ -4,9 +4,7 @@ import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
 
 import 'interact.dart';
 
-/*
-TImerScreen - Main screen for the movment timer interaction.
- */
+/// TimerScreen - Main screen for the movment timer interaction.
 class TimerScreen extends StatefulWidget {
   final Interact interact;
   TimerScreen(this.interact);
@@ -15,9 +13,7 @@ class TimerScreen extends StatefulWidget {
 }
 
 
-/*
-State for the movement Timer Interaction
- */
+/// State for the movement Timer Interaction
 class TimerScreenState extends State<TimerScreen> {
 
   //Interaction class
@@ -32,28 +28,21 @@ class TimerScreenState extends State<TimerScreen> {
   //Display Data
   SensorDataType? _sensorData = NullData();
 
-  //TODO
-  int _tick = 0;
-
-
   //Constructor
   TimerScreenState(this._interact) {
     this._movementTracker = MovementTracker(_interact);
   }
 
   //Updates the text data.
-  void updateText(SensorDataType sensorData, int tick) {
+  void updateText(SensorDataType sensorData) {
     setState(() {
       _sensorData = sensorData;
-
-      //TODO
-      _tick = tick;
     });
   }
 
 
 
-  //build the main Widget
+  ///Builds the main Widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,8 +84,6 @@ class TimerScreenState extends State<TimerScreen> {
               },
               child: Text('Starten'),
             ),
-
-            Text(_tick.toString()),
 
             //Data table for the live display of the sensor data.
             DataTable(

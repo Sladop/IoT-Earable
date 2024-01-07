@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:open_earable/apps/ufiiu/interact.dart';
 import 'package:open_earable/apps/ufiiu/sensor_datatypes.dart';
-import 'package:open_earable/apps/ufiiu/timerscreen.dart';
 import 'package:open_earable_flutter/src/open_earable_flutter.dart';
-import 'package:three_dart_jsm/three_dart_jsm.dart';
 
+/// Movement Tracker has lgoic for timer & movement validation.
 class MovementTracker {
 
   //Incetaction variables
@@ -23,8 +22,11 @@ class MovementTracker {
     this._openEarable = _interact.getEarable();
   }
 
-  //Start Subscription and reset timer.
-  void start(int minutes, void Function(SensorDataType s, int tick) updateText) {
+  ///Start Subscription and reset timer.
+  ///
+  /// Input: [minutes] for the time before the ring.
+  /// Input: [updateText] as an void callback function for the textupdate.
+  void start(int minutes, void Function(SensorDataType s) updateText) {
 
     //Timer (re-)start
     stop();
@@ -37,14 +39,16 @@ class MovementTracker {
     _subscription = _openEarable.sensorManager.subscribeToSensorData(0).listen((event) {
 
       //Display update callback
-      updateText(Gyroscope(event), _timer!.tick);
+      updateText(Gyroscope(event));
 
       //Timer update
       _update(Gyroscope(event), minutes);
     });
   }
 
-  //(Re-)Starts timer and cancels subscription & calls ring() when finished.
+  ///(Re-)Starts timer and cancels subscription & calls ring() when finished.
+  ///
+  /// Input: int [minutes] for the timer length.
   void _startTimer(int minutes) {
     _timer?.cancel();
     _timer = Timer(Duration(minutes: minutes), () {
@@ -54,13 +58,15 @@ class MovementTracker {
     });
   }
 
-  // Cancels timer and subscription to the Earable sensor stream.
+  /// Cancels timer and subscription to the Earable sensor stream.
   void stop() {
     _timer?.cancel();
     _subscription?.cancel();
   }
 
-  // Update method for restarting timer when movement is tracked.
+  /// Update method for restarting timer when movement is tracked.
+  ///
+  /// Uses the [SensorDataType] to validate update and int [minutes] to restart the timer.
   void _update(SensorDataType dt, int minutes) {
     if(_validMovement(dt)) {
       _timer?.cancel();
@@ -68,7 +74,9 @@ class MovementTracker {
     }
   }
 
-  // Validates wether the given sensordata could be interpretet as a movement.
+  /// Validates wether the given sensordata could be interpretet as a movement.
+  ///
+  /// Input: [SensorDataType] with the data to be validated.
   bool _validMovement(SensorDataType dt) {
 
     Gyroscope gyro;
@@ -87,7 +95,7 @@ class MovementTracker {
     return false;
   }
 
-  //Sensor Config for the earable.
+  ///Sensor Config for the earable.
   OpenEarableSensorConfig _buildSensorConfig() {
     return OpenEarableSensorConfig(
       sensorId: 0,

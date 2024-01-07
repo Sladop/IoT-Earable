@@ -4,9 +4,8 @@ import 'package:open_earable_flutter/src/open_earable_flutter.dart';
 
 import 'interact.dart';
 
-/*
-Homescreen for the application.
- */
+
+/// Homescreen class for the movement timer application.
 class SleepHomeScreen extends StatefulWidget {
   final OpenEarable _openEarable;
   SleepHomeScreen(this._openEarable);
@@ -14,9 +13,9 @@ class SleepHomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState(_openEarable);
 }
 
-/*
-State for the HomeScreenApplication.
- */
+/// State for the HomeScreenApplication.
+///
+/// Needs the [OpenEarable]-Object to interact.
 class _HomeScreenState extends State<SleepHomeScreen> {
 
   final OpenEarable _openEarable;
@@ -62,7 +61,7 @@ class _HomeScreenState extends State<SleepHomeScreen> {
     );
   }
 
-  //Body-Widget for Main Widget.
+  ///Body-Widget for Main Widget.
   Widget _getBody() {
     switch (_currentIndex) {
       case 0:
@@ -73,10 +72,11 @@ class _HomeScreenState extends State<SleepHomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //Image-Source
-              Image.network(
-                'https://cdn-icons-png.flaticon.com/512/198/198155.png',
-                width: 150,
-                height: 150,
+              Text(
+                'Mit der Powernapping App können Sie einen Timer starten, der ganz automatisch an Ihren Bewegungen erkennt, '
+                    'wann Sie wirklich eingeschlafen sind. Der Timer wird automatisch restartet, wenn Sie sich bewegen, '
+                    'so können Sie effektiv powernappen und eine gemütliche Position finden ohne das schon die Zeit abläuft!',
+                style: TextStyle(fontSize: 24),
               ),
               SizedBox(height: 20),
             ],
@@ -105,7 +105,9 @@ class _HomeScreenState extends State<SleepHomeScreen> {
     return Container();
   }
 
-  //Navigation-Bar interaction
+  ///Navigation-Bar interaction
+  ///
+  /// [Index] is the tab index activated.
   void _onNavBarItemTapped(int index) {
     setState(() {
       _currentIndex = index;
